@@ -1,0 +1,215 @@
+/* 基本設定 */
+:root {
+    --primary-color: #00d4ff; /* 科技藍 */
+    --bg-color: #0f172a;      /* 深藍黑背景 */
+    --card-bg: #1e293b;       /* 卡片背景 */
+    --text-color: #f1f5f9;    /* 文字淺灰色 */
+    --accent-color: #38bdf8;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* 頁首設定 */
+header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 3rem 1rem;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    color: var(--primary-color);
+}
+
+/* 區塊容器 */
+section {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+h2 {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 15px;
+    margin-bottom: 25px;
+    color: var(--accent-color);
+}
+
+/* 作品集卡片設計 */
+.project-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* 加深陰影層次 */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.project-card h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    /* 加入一點文字陰影讓標題更亮眼 */
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3); 
+}
+
+/* --- 輪播圖相關 CSS --- */
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;   /* 稍微調寬一點，展示效果更好 */
+    margin: 25px auto;  /* 增加與文字的間距 */
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(56, 189, 248, 0.3); /* 邊框改為帶透明的藍色 */
+    background-color: #000;
+    
+    aspect-ratio: 16 / 10; /* 微調比例，更符合軟體視窗 */
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* 更絲滑的動畫 */
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    object-fit: contain; 
+}
+
+/* 修正按鈕位置與樣式 - 質感升級版 */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    /* 改用毛玻璃效果，更有現代感 */
+    background-color: rgba(15, 23, 42, 0.4); 
+    backdrop-filter: blur(4px); 
+    
+    color: var(--primary-color);
+    width: 44px;  /* 固定寬高確保圓形 */
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    opacity: 0.7; /* 平常稍微透明，不擋視線 */
+}
+
+.prev:hover, .next:hover {
+    background-color: var(--primary-color);
+    color: #0f172a;
+    opacity: 1;
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+.prev { left: 15px; }  /* 距離邊緣稍微拉開 */
+.next { right: 15px; }
+
+/* --- 輪播圖相關 CSS 結束 --- */
+
+/* 按鈕美化 */
+.btn {
+    display: inline-block;
+    padding: 10px 28px; /* 稍微加寬 */
+    background-color: var(--primary-color);
+    color: #0f172a;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    background-color: white;
+    box-shadow: 0 0 20px var(--primary-color);
+    transform: scale(1.05); /* 懸停時輕微放大 */
+}
+
+/* Modal 背景層 */
+.modal {
+    display: none; /* 預設隱藏 */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.8); /* 深色半透明 */
+    backdrop-filter: blur(8px); /* 霧面效果 */
+}
+
+/* Modal 內容視窗 */
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid var(--primary-color);
+    width: 80%;
+    max-width: 600px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+/* 關閉按鈕 */
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    color: #94a3b8;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+}
+
+/* 彈出動畫 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 頁尾 */
+footer {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+

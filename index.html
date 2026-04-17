@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 | Gary</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+    // 1. 輪播控制函數
+    function moveSlide(step, btnElement) {
+        const container = btnElement.parentElement;
+        const slider = container.querySelector('.slider');
+        const slides = slider.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        let index = parseInt(container.getAttribute('data-current-slide') || '0');
+        index += step;
+
+        if (index >= totalSlides) {
+            index = 0;
+        } else if (index < 0) {
+            index = totalSlides - 1;
+        }
+
+        container.setAttribute('data-current-slide', index);
+        slider.style.transform = `translateX(${-index * 100}%)`;
+    }
+
+    // 2. 開啟彈窗 (移出 moveSlide)
+    function openModal() {
+        document.getElementById("projectModal").style.display = "block";
+        document.body.style.overflow = "hidden"; 
+    }
+
+    // 3. 關閉彈窗 (移出 moveSlide)
+    function closeModal() {
+        document.getElementById("projectModal").style.display = "none";
+        document.body.style.overflow = "auto"; 
+    }
+
+    // 4. 點擊彈窗外關閉 (全域監聽)
+    window.onclick = function(event) {
+        const modal = document.getElementById("projectModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+<body>
+    <header>
+        <h1>許朕銜-Gary</h1>
+        <p>通訊工程系 | Python | 遊戲製作</p>
+    </header>
+
+    <section id="about">
+        <h2>關於我</h2>
+        <div class="about-container">
+            <div class="about-text">
+                <p>目前就讀 <strong>亞東科技大學 - 通訊工程系</strong>。專注於 <strong>Python 自動化開發</strong> 與 <strong>Streamlit 數據應用</strong> ，具備基礎的軟硬體實力。</p>
+                <p>我擅長將通訊協定與軟體開發結合，曾獨立開發 KSR 通訊監測平台與伺服器管理中心，致力於利用技術自動化解決維運與品質追蹤等實際問題，目標在 <strong>電信技術</strong> 或 <strong>軟體設計</strong> 領域持續努力。</p>
+            </div>
+            
+            <div class="skills-highlights">
+                <h3>專業認證</h3>
+                <ul class="badge-list">
+                    <li><span class="badge">通訊技術乙級</span></li>
+                    <li><span class="badge">電腦硬體裝修乙級</span></li>
+                    <li><span class="badge">GS1 物聯網專業人員認證</span></li>
+                </ul>
+            </div>
+            <div class="skills-highlights">
+                <h3>目前作品</h3>
+                <ul class="badge-list">
+                    <li><span class="badge">LumiBeat</span></li>
+                    <li><span class="badge">KSR 通訊品質監測平台</span></li>
+                    <li><span class="badge">KSR Server Control</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>精選專案</h2>
+
+        <div class="project-card">
+            <h3>KSR 通訊品質監測平台</h3>
+            <div class="slider-container">
+                <div class="slider">
+                    <img src="KSR Streamlit.png" alt="KSR 平台預覽1" class="slide">
+                    <img src="KSR Streamlit-2.png" alt="KSR 平台預覽2" class="slide">
+                    <img src="KSR Streamlit-3.png" alt="KSR 平台預覽3" class="slide">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
+            </div>
+            <p>使用 Python 與 Streamlit 打造的即時監測工具，提供網路連線品質的數據可視化，專為優化通訊穩定度設計。</p>
+            <a href="https://my-ai-app-vweyvgkccwtkc4hgswuv9c.streamlit.app/" target="_blank" class="btn">進入即時預覽</a>
+        </div>
+
+        <div class="project-card">
+            <h3>KSR Server Control</h3>
+            <div class="slider-container">
+                <div class="slider">
+                    <img src="KSR Control_1.png" alt="預覽 1" class="slide">
+                    <img src="KSR Control_2.png" alt="預覽 2" class="slide">
+                    <img src="KSR Control_3.png" alt="預覽 3" class="slide">
+                    <img src="KSR Control_4.png" alt="預覽 4" class="slide">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
+            </div>
+            <p>整合式服務監控與自動化控制中心，專為優化系統維運與日誌追蹤流程設計。</p>
+            <a href="javascript:void(0)" class="btn" onclick="openModal()" style="margin-top: 20px;">查看專案細節</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 許朕銜-Gary | 聯繫方式：s39759464s@gmail.com</p>
+        <p>維護時間：2026/04/18</p>
+    </footer>
+
+    <div id="projectModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">專案詳情</h2>
+                <div id="modalBody">
+                    <h3>KSR Server Control</h3>
+                    <p>針對自製估價單系統設計的後台管理平台，透過集中化管理介面，降低運維門檻並提升系統反應速度。</p>
+                    
+                    <h4>技術架構</h4>
+                    <ul>
+                        <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
+                        <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
+                    </ul>
+
+                    <h4>關鍵功能與開發重點</h4>
+                    <ul>
+                        <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性。</li>
+                        <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除。</li>
+                        <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷。</li>
+                    </ul>
+
+                    <h4>專案成效</h4>
+                    <p>成功整合原有零散的命令列工具，將服務管理效率提升，並使非技術人員也能透過圖形化介面進行基礎維運排除。</p>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

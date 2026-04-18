@@ -7,44 +7,84 @@
     <link id="theme-style" rel="stylesheet" href="style-1.css">
 </head>
 <script>
-    // --- 1. 語言字典 (i18n) ---
+    // --- 1. 語言字典 (i18n) - 補全所有區塊內容 ---
     const i18n = {
         zh: {
             aboutTitle: "關於我",
-            aboutDesc: "目前就讀 <strong>亞東科技大學 - 通訊工程系</strong>。專注於 <strong>Python 自動化開發</strong> 與 <strong>Streamlit 數據應用</strong>，具備基礎的軟硬體實力。<br>曾獨立開發 KSR 通訊監測平台與伺服器管理中心，致力於利用技術自動化解決維運與品質追蹤等實際問題。",
+            aboutDesc: "目前就讀 <strong>亞東科技大學 - 通訊工程系</strong>。專注於 <strong>Python 自動化開發</strong> 與 <strong>Streamlit 數據應用</strong>，具備基礎的軟硬體實力。<br>我擅長將通訊協定與軟體開發結合，曾獨立開發 KSR 通訊監測平台與伺服器管理中心，致力於利用技術自動化解決維運與品質追蹤等實際問題。",
             certTitle: "專業認證",
+            certList: '<li><span class="badge">通訊技術乙級</span></li><li><span class="badge">電腦硬體裝修乙級</span></li><li><span class="badge">GS1 物聯網專業人員認證</span></li>',
             projectTitle: "目前作品",
-            viewDemo: "觀開遊玩畫面",
+            viewDemo: "觀看遊玩畫面",
             viewLive: "進入即時預覽",
             viewDetail: "查看專案細節",
             ksrLumiDesc: "使用Python-pygame製造的一款簡易節奏遊戲。",
             ksrStreamDesc: "使用 Python 與 Streamlit 打造的即時監測工具，提供網路連線品質數據可視化。",
-            ksrControlDesc: "整合式服務監控與自動化控制中心，專為優化系統維運與日誌追蹤設計。"
+            ksrControlDesc: "整合式服務監控與自動化控制中心，專為優化系統維運與日誌追蹤設計。",
+            modalDetailTitle: "專案詳情",
+            modalDetailContent: `
+                <h3>KSR Server Control</h3>
+                <p>針對自製估價單系統設計的後台管理平台，透過集中化管理介面，降低運維門檻並提升系統反應速度。</p>
+                <h4>技術架構</h4>
+                <ul>
+                    <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
+                    <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
+                </ul>
+                <h4>關鍵功能與開發重點</h4>
+                <ul>
+                    <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性.</li>
+                    <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除.</li>
+                    <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷.</li>
+                </ul>`
         },
         en: {
             aboutTitle: "About Me",
-            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Developed KSR monitoring platforms and server control centers to optimize maintenance and quality tracking processes.",
+            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in integrating protocols with software development. Developed KSR monitoring platforms and server control centers to solve maintenance and quality tracking issues.",
             certTitle: "Certifications",
+            certList: '<li><span class="badge">Level B Communications Tech.</span></li><li><span class="badge">Level B Computer Hardware Maint.</span></li><li><span class="badge">GS1 IoT Professional Cert.</span></li>',
             projectTitle: "Portfolio",
-            viewDemo: "Watch Demo",
+            viewDemo: "Watch Gameplay",
             viewLive: "Live Preview",
-            viewDetail: "Project Details",
+            viewDetail: "View Details",
             ksrLumiDesc: "A simple rhythm game built with Python-pygame.",
-            ksrStreamDesc: "Real-time network quality monitoring tool built with Python and Streamlit.",
-            ksrControlDesc: "Integrated service monitoring and automation center for server maintenance."
+            ksrStreamDesc: "A real-time network quality monitoring tool built with Python and Streamlit.",
+            ksrControlDesc: "Integrated service monitoring and automation center for server maintenance.",
+            modalDetailTitle: "Project Details",
+            modalDetailContent: `
+                <h3>KSR Server Control</h3>
+                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds and improving system response.</p>
+                <h4>Technical Stack</h4>
+                <ul>
+                    <li><strong>Backend:</strong> Python-based engine handling process links with the server core.</li>
+                    <li><strong>Communication:</strong> Implements RPC logic supporting one-click start, stop, and restart, reducing SSH dependency.</li>
+                </ul>
+                <h4>Key Features</h4>
+                <ul>
+                    <li><strong>Real-time Monitoring:</strong> Polls server activity metrics to ensure high service availability.</li>
+                    <li><strong>Log Integration:</strong> Automatically pipes server logs to the web interface with keyword tracking.</li>
+                    <li><strong>Security:</strong> Optimized workflows for internal management to prevent accidental service interruptions.</li>
+                </ul>`
         }
     };
 
     function changeLanguage(lang) {
         localStorage.setItem('user-lang', lang);
-        document.getElementById("about-title").innerText = i18n[lang].aboutTitle;
+        
+        // 使用 innerHTML 確保 <strong> <br> 等標籤生效
+        document.getElementById("about-title").innerHTML = i18n[lang].aboutTitle;
         document.getElementById("about-desc").innerHTML = i18n[lang].aboutDesc;
-        document.getElementById("cert-title").innerText = i18n[lang].certTitle;
-        document.getElementById("projects-title").innerText = i18n[lang].projectTitle;
-        document.getElementById("ksr-lumi-p").innerText = i18n[lang].ksrLumiDesc;
-        document.getElementById("ksr-stream-p").innerText = i18n[lang].ksrStreamDesc;
-        document.getElementById("ksr-control-p").innerText = i18n[lang].ksrControlDesc;
+        document.getElementById("cert-title").innerHTML = i18n[lang].certTitle;
+        document.getElementById("cert-list").innerHTML = i18n[lang].certList;
+        document.getElementById("projects-title").innerHTML = i18n[lang].projectTitle;
+        document.getElementById("ksr-lumi-p").innerHTML = i18n[lang].ksrLumiDesc;
+        document.getElementById("ksr-stream-p").innerHTML = i18n[lang].ksrStreamDesc;
+        document.getElementById("ksr-control-p").innerHTML = i18n[lang].ksrControlDesc;
+        
+        // 彈窗內的內容也一併更換
+        document.getElementById("modalTitle").innerHTML = i18n[lang].modalDetailTitle;
+        document.getElementById("modalBody").innerHTML = i18n[lang].modalDetailContent;
 
+        // 批次更換按鈕文字
         document.querySelectorAll(".btn").forEach(btn => {
             if (btn.innerText.includes("觀看") || btn.innerText.includes("Watch")) btn.innerText = i18n[lang].viewDemo;
             else if (btn.innerText.includes("預覽") || btn.innerText.includes("Live")) btn.innerText = i18n[lang].viewLive;
@@ -82,7 +122,6 @@
         localStorage.setItem('user-theme', themeURL);
     }
 
-    // --- 3. 手機版優化燈箱 ---
     function openImageModal(src, event) {
         if (event) event.stopPropagation();
         const imgModal = document.getElementById("imageModal");
@@ -99,13 +138,10 @@
         }
     }
 
-    // --- 4. 影片控制 (已移出 onclick 防止錯誤) ---
     function openVideoModal(videoID) {
-        // 既然內嵌會報錯，這裡維持你最穩定的 [新視窗開啟] 邏輯，若之後要改回內嵌再調整
         window.open(`https://www.youtube.com/watch?v=${videoID}`, '_blank');
     }
 
-    // --- 5. 事件監聽 ---
     window.onclick = function(event) {
         const projModal = document.getElementById("projectModal");
         const imgModal = document.getElementById("imageModal");
@@ -162,7 +198,7 @@
             </div>
             <div class="skills-highlights">
                 <h3 id="cert-title">專業認證</h3>
-                <ul class="badge-list">
+                <ul class="badge-list" id="cert-list">
                     <li><span class="badge">通訊技術乙級</span></li>
                     <li><span class="badge">電腦硬體裝修乙級</span></li>
                     <li><span class="badge">GS1 物聯網專業人員認證</span></li>
@@ -229,22 +265,9 @@
     <div id="projectModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>專案詳情</h2>
+            <h2 id="modalTitle">專案詳情</h2>
             <div id="modalBody">
-                <h3>KSR Server Control</h3>
-                <p>針對自製估價單系統設計的後台管理平台，透過集中化管理介面，降低運維門檻並提升系統反應速度。</p>
-                <h4>技術架構</h4>
-                <ul>
-                    <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
-                    <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
-                </ul>
-                <h4>關鍵功能與開發重點</h4>
-                <ul>
-                    <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性.</li>
-                    <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除.</li>
-                    <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷.</li>
-                </ul>
-            </div>
+                </div>
         </div>
     </div>
 

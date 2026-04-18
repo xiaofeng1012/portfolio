@@ -4,51 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品集 | Gary</title>
-    <link rel="stylesheet" href="style.css">
+    <link id="theme-style" rel="stylesheet" href="style-1.css">
 </head>
 <script>
-    // 1. 輪播控制函數
+    // --- 1. 輪播邏輯 ---
     function moveSlide(step, btnElement) {
         const container = btnElement.parentElement;
         const slider = container.querySelector('.slider');
         const slides = slider.querySelectorAll('.slide');
         const totalSlides = slides.length;
-
         let index = parseInt(container.getAttribute('data-current-slide') || '0');
         index += step;
-
-        if (index >= totalSlides) {
-            index = 0;
-        } else if (index < 0) {
-            index = totalSlides - 1;
-        }
-
+        if (index >= totalSlides) index = 0;
+        else if (index < 0) index = totalSlides - 1;
         container.setAttribute('data-current-slide', index);
         slider.style.transform = `translateX(${-index * 100}%)`;
     }
 
-    // 2. 開啟彈窗 (移出 moveSlide)
+    // --- 2. 詳情彈窗邏輯 ---
     function openModal() {
         document.getElementById("projectModal").style.display = "block";
         document.body.style.overflow = "hidden"; 
     }
 
-    // 3. 關閉彈窗 (移出 moveSlide)
     function closeModal() {
         document.getElementById("projectModal").style.display = "none";
         document.body.style.overflow = "auto"; 
     }
 
-    // 4. 點擊彈窗外關閉 (全域監聽)
+    // --- 3. 圖片放大邏輯 ---
+    function openImageModal(src) {
+        const imgModal = document.getElementById("imageModal");
+        const fullImg = document.getElementById("fullImage");
+        imgModal.style.display = "flex"; 
+        fullImg.src = src;
+        document.body.style.overflow = "hidden"; 
+    }
+
+    function closeImageModal() {
+        document.getElementById("imageModal").style.display = "none";
+        if (document.getElementById("projectModal").style.display !== "block") {
+            document.body.style.overflow = "auto";
+        }
+    }
+
+    // --- 4. YouTube 影片彈窗邏輯 (已修正位置) ---
+    function openVideoModal(videoID) {
+        const vModal = document.getElementById("videoModal");
+        const container = document.getElementById("ytPlayerContainer");
+        
+        vModal.style.display = "flex";
+        vModal.style.alignItems = "center";
+        vModal.style.justifyContent = "center";
+        
+        // 修正：使用 YouTube 嵌入網址格式
+        container.innerHTML = `
+            <iframe width="100%" height="100%" 
+                src="https://www.youtube.com/embed/HyIEvI6--yQ" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen style="border-radius: 8px;">
+            </iframe>`;
+    }
+
+    function closeVideoModal() {
+        const vModal = document.getElementById("videoModal");
+        const container = document.getElementById("ytPlayerContainer");
+        vModal.style.display = "none";
+        container.innerHTML = ""; // 清空內容以停止播放
+        document.body.style.overflow = "auto";
+    }
+
+    // --- 5. 主題切換 ---
+    function changeTheme(selectElement) {
+        const themeURL = selectElement.value;
+        document.getElementById('theme-style').href = themeURL;
+        localStorage.setItem('user-theme', themeURL);
+    }
+
+    // --- 6. 全域點擊判定 ---
     window.onclick = function(event) {
-        const modal = document.getElementById("projectModal");
-        if (event.target == modal) {
-            closeModal();
+        const projModal = document.getElementById("projectModal");
+        const imgModal = document.getElementById("imageModal");
+        const vModal = document.getElementById("videoModal");
+
+        if (event.target == projModal) closeModal();
+        if (event.target == imgModal) closeImageModal();
+        if (event.target == vModal) closeVideoModal();
+    }
+
+    window.onload = function() {
+        const savedTheme = localStorage.getItem('user-theme');
+        if (savedTheme) {
+            document.getElementById('theme-style').href = savedTheme;
+            document.getElementById('theme-selector').value = savedTheme;
         }
     }
 </script>
 <body>
-    <header>
+    <header style="position: relative;">
+        <div class="theme-switcher" style="position: absolute; top: 15px; right: 20px; display: flex; align-items: center;">
+            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-right: 8px; letter-spacing: 1px;">MODE /</span>
+            <select id="theme-selector" onchange="changeTheme(this)" 
+                    style="background: transparent; color: rgba(255,255,255,0.6); border: none; font-size: 0.75rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;">
+                <option value="style-1.css" style="background: #1e293b; color: white;">DARK</option>
+                <option value="style-2.css" style="background: #1e293b; color: white;">LIGHT</option>
+            </select>
+        </div>
+
         <h1>許朕銜-Gary</h1>
         <p>通訊工程系 | Python | 遊戲製作</p>
     </header>
@@ -58,7 +121,7 @@
         <div class="about-container">
             <div class="about-text">
                 <p>目前就讀 <strong>亞東科技大學 - 通訊工程系</strong>。專注於 <strong>Python 自動化開發</strong> 與 <strong>Streamlit 數據應用</strong> ，具備基礎的軟硬體實力。</p>
-                <p>我擅長將通訊協定與軟體開發結合，開發 KSR 通訊監測平台與KSR Server管理中心，利用自動化解決維運與品質追蹤等實際問題，目標在 <strong>電信技術</strong> 或 <strong>軟體設計</strong> 領域持續努力。</p>
+                <p>我擅長將通訊協定與軟體開發結合，曾獨立開發 KSR 通訊監測平台與伺服器管理中心，致力於利用技術自動化解決維運與品質追蹤等實際問題，目標在 <strong>電信技術</strong> 或 <strong>軟體設計</strong> 領域持續努力。</p>
             </div>
             
             <div class="skills-highlights">
@@ -69,27 +132,35 @@
                     <li><span class="badge">GS1 物聯網專業人員認證</span></li>
                 </ul>
             </div>
-            <div class="skills-highlights">
-                <h3>目前作品</h3>
-                <ul class="badge-list">
-                    <li><span class="badge">LumiBeat[未更新]</span></li>
-                    <li><span class="badge">KSR 通訊品質監測平台</span></li>
-                    <li><span class="badge">KSR Server Control</span></li>
-                </ul>
-            </div>
         </div>
     </section>
 
     <section id="projects">
-        <h2>精選專案</h2>
+        <h2>目前作品</h2>
+
+        <div class="project-card">
+            <h3>KSR LumiBeat</h3>
+            <div class="slider-container">
+                <div class="slider">
+                    <img src="KSR Lumibeat_1.png" alt="KSR Lumibea預覽1" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Lumibeat_2.png" alt="KSR Lumibea預覽2" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Lumibeat_3.png" alt="KSR Lumibea預覽3" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Lumibeat_4.png" alt="KSR Lumibea預覽4" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
+            </div>
+            <p>使用Python-pygame製造的一款簡易節奏遊戲。</p>
+            <a href="https://www.youtube.com/watch?v=HyIEvI6--yQ" target="_blank" class="btn">觀看遊玩畫面</a>
+        </div>
 
         <div class="project-card">
             <h3>KSR 通訊品質監測平台</h3>
             <div class="slider-container">
                 <div class="slider">
-                    <img src="KSR Streamlit.png" alt="KSR 平台預覽1" class="slide">
-                    <img src="KSR Streamlit-2.png" alt="KSR 平台預覽2" class="slide">
-                    <img src="KSR Streamlit-3.png" alt="KSR 平台預覽3" class="slide">
+                    <img src="KSR Streamlit.png" alt="KSR 平台預覽1" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Streamlit-2.png" alt="KSR 平台預覽2" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Streamlit-3.png" alt="KSR 平台預覽3" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
                 </div>
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
@@ -102,10 +173,10 @@
             <h3>KSR Server Control</h3>
             <div class="slider-container">
                 <div class="slider">
-                    <img src="KSR Control_1.png" alt="預覽 1" class="slide">
-                    <img src="KSR Control_2.png" alt="預覽 2" class="slide">
-                    <img src="KSR Control_3.png" alt="預覽 3" class="slide">
-                    <img src="KSR Control_4.png" alt="預覽 4" class="slide">
+                    <img src="KSR Control_1.png" alt="預覽 1" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Control_2.png" alt="預覽 2" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Control_3.png" alt="預覽 3" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
+                    <img src="KSR Control_4.png" alt="預覽 4" class="slide" onclick="openImageModal(this.src)" style="cursor: zoom-in;">
                 </div>
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
@@ -121,30 +192,33 @@
     </footer>
 
     <div id="projectModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-                <h2 id="modalTitle">專案詳情</h2>
-                <div id="modalBody">
-                    <h3>KSR Server Control</h3>
-                    <p>針對自製估價單系統設計的後台管理平台，透過集中化管理介面，降低運維門檻並提升系統反應速度。</p>
-                    
-                    <h4>技術架構</h4>
-                    <ul>
-                        <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
-                        <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
-                    </ul>
-
-                    <h4>關鍵功能與開發重點</h4>
-                    <ul>
-                        <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性。</li>
-                        <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除。</li>
-                        <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷。</li>
-                    </ul>
-
-                    <h4>專案成效</h4>
-                    <p>成功整合原有零散的命令列工具，將服務管理效率提升，並使非技術人員也能透過圖形化介面進行基礎維運排除。</p>
-                </div>
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">專案詳情</h2>
+            <div id="modalBody">
+                <h3>KSR Server Control</h3>
+                <p>針對自製估價單系統設計的後台管理平台，透過集中化管理介面，降低運維門檻並提升系統反應速度。</p>
+                <h4>技術架構</h4>
+                <ul>
+                    <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
+                    <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
+                </ul>
+                <h4>關鍵功能與開發重點</h4>
+                <ul>
+                    <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性.</li>
+                    <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除.</li>
+                    <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷.</li>
+                </ul>
+                <h4>專案成效</h4>
+                <p>成功整合原有零散的命令列工具，將服務管理效率提升，並使非技術人員也能透過圖形化介面進行基礎維運排除。</p>
             </div>
         </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn" onclick="closeImageModal()">&times;</span>
+        <img id="fullImage" class="lightbox-img">
+    </div>
+
 </body>
 </html>

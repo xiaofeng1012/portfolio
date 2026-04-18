@@ -1,0 +1,230 @@
+/* 基本設定 */
+:root {
+    --primary-color: #00d4ff; /* 科技藍 */
+    --bg-color: #0f172a;      /* 深藍黑背景 */
+    --card-bg: #1e293b;       /* 卡片背景 */
+    --text-color: #f1f5f9;    /* 文字淺灰色 */
+    --accent-color: #38bdf8;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* 頁首設定 */
+header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 3rem 1rem;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    color: var(--primary-color);
+}
+
+/* 區塊容器 */
+section {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+h2 {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 15px;
+    margin-bottom: 25px;
+    color: var(--accent-color);
+}
+
+/* 作品集卡片設計 */
+.project-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.project-card h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3); 
+}
+
+/* --- 輪播圖相關 --- */
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 25px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    background-color: #000;
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: zoom-in;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    color: var(--primary-color);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.prev:hover, .next:hover {
+    background-color: var(--primary-color);
+    color: #0f172a;
+    opacity: 1;
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* --- 按鈕美化 --- */
+.btn {
+    display: inline-block;
+    padding: 10px 28px;
+    background-color: var(--primary-color);
+    color: #0f172a;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    background-color: white;
+    box-shadow: 0 0 20px var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* --- Modal 基礎與詳情視窗 --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid var(--primary-color);
+    width: 80%;
+    max-width: 600px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    color: #94a3b8;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+}
+
+/* --- 圖片燈箱專用修正區 (縮小放大比例) --- */
+#imageModal {
+    background-color: rgba(0, 0, 0, 0.9);
+    cursor: zoom-out;
+    display: none; /* JS 切換為 flex */
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-img {
+    /* 核心修正：將放大圖片限制在螢幕的 60% 寬 */
+    max-width: 60%; 
+    max-height: 80%;
+    object-fit: contain;
+    border-radius: 10px;
+    
+    /* 增加陰影立體感 */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 
+                0 0 20px rgba(0, 212, 255, 0.2);
+    
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 頁尾 */
+footer {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}

@@ -1,0 +1,232 @@
+/* 專業商務與金融風格設定 */
+:root {
+    --primary-color: #0056b3; /* 穩重深藍 */
+    --bg-color: #f8fafc;      /* 極淺灰藍背景 */
+    --card-bg: #ffffff;       /* 純白卡片 */
+    --text-color: #1e293b;    /* 深灰黑文字 */
+    --accent-color: #334155;  /* 次要資訊灰 */
+    --accent-gray: #64748b;   /* 補上頁尾用的灰色變數 */
+    --border-color: #e2e8f0;  /* 邊框淺灰色 */
+}
+
+body {
+    font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* 頁首設定 - 改為商務藍漸層 */
+header {
+    background: linear-gradient(135deg, #003366 0%, #0056b3 100%);
+    padding: 3.5rem 1rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+/* 區塊容器 */
+section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h2 {
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+/* 作品集卡片設計 - 改為簡潔明亮版 */
+.project-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 25px rgba(0, 86, 179, 0.1);
+}
+
+.project-card h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* --- 輪播圖相關 CSS --- */
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 25px auto;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: #f1f5f9;
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    cursor: zoom-in; /* 提示使用者可以放大 */
+}
+
+/* 輪播按鈕 */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    color: var(--primary-color);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.prev:hover, .next:hover {
+    background-color: var(--primary-color);
+    color: white;
+    opacity: 1;
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* 按鈕美化 - 實色商務感 */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #003d80;
+    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+    transform: scale(1.02);
+}
+
+/* --- Modal 彈窗設定 --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6); 
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 8% auto;
+    padding: 40px;
+    border: none;
+    width: 85%;
+    max-width: 650px;
+    border-radius: 12px;
+    position: relative;
+    color: var(--text-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+/* --- 圖片燈箱獨立修正區 (關鍵：縮小放大後的圖) --- */
+#imageModal {
+    background-color: rgba(0, 0, 0, 0.9);
+    cursor: zoom-out;
+    display: none; /* 由 JS 控制切換為 flex */
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-img {
+    max-width: 60%;  /* 核心修正：將放大比例限制在 60% */
+    max-height: 80%; /* 避免直式圖片頂天立地 */
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.1);
+    animation: zoomIn 0.3s ease;
+}
+
+.close-btn {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    color: #94a3b8;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 頁尾 */
+footer {
+    text-align: center;
+    padding: 60px 0;
+    font-size: 0.9rem;
+    color: var(--accent-gray);
+    background-color: #f1f5f9;
+    border-top: 1px solid var(--border-color);
+}

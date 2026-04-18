@@ -82,6 +82,22 @@
         localStorage.setItem('user-theme', themeURL);
     }
 
+    function openImageModal(src) {
+    const imgModal = document.getElementById("imageModal");
+    const fullImg = document.getElementById("fullImage");
+    
+    // 強制使用 flex 佈局
+    imgModal.style.display = "flex"; 
+    fullImg.src = src;
+    
+    // 防止手機版開啟時滾動到背景
+    document.body.style.overflow = "hidden";
+    
+    // 增加一個毫秒延遲，防止點擊穿透 (手機版常見問題)
+    event.stopPropagation(); 
+    }
+
+
     // --- 6. 全域點擊判定 ---
     window.onclick = function(event) {
         const projModal = document.getElementById("projectModal");
@@ -99,6 +115,7 @@
             document.getElementById('theme-style').href = savedTheme;
             document.getElementById('theme-selector').value = savedTheme;
         }
+
     }
 </script>
 <body>

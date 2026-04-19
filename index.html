@@ -7,7 +7,7 @@
     <link id="theme-style" rel="stylesheet" href="style-1.css">
 </head>
 <script>
-    // --- 1. 語言字典 (i18n) ---
+    // --- 1. 語言字典 (i18n) - 包含你提供的最新專案詳情 ---
     const i18n = {
         zh: {
             aboutTitle: "關於我",
@@ -29,52 +29,60 @@
                 <ul>
                     <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
                     <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
+                </ul>
+                <h4>關鍵功能與開發重點</h4>
+                <ul>
+                    <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性。</li>
+                    <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除。</li>
+                    <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷。</li>
                 </ul>`
         },
         en: {
             aboutTitle: "About Me",
-            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in integrating protocols with software development. Developed KSR monitoring platforms and server control centers to solve maintenance issues.",
+            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in merging communication protocols with software development to solve maintenance and quality tracking issues.",
             certTitle: "Certifications",
             certList: '<li><span class="badge">Level B Communications Tech.</span></li><li><span class="badge">Level B Computer Hardware Maint.</span></li><li><span class="badge">GS1 IoT Professional Cert.</span></li>',
             projectTitle: "Portfolio",
             viewDemo: "Watch Gameplay",
             viewLive: "Live Preview",
-            viewDetail: "View Details",
+            viewDetail: "Project Details",
             ksrLumiDesc: "A simple rhythm game built with Python-pygame.",
-            ksrStreamDesc: "A real-time network quality monitoring tool built with Python and Streamlit.",
+            ksrStreamDesc: "Real-time network quality monitoring tool built with Python and Streamlit.",
             ksrControlDesc: "Integrated service monitoring and automation center for server maintenance.",
             modalDetailTitle: "Project Details",
             modalDetailContent: `
                 <h3>KSR Server Control</h3>
-                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds.</p>
-                <h4>Technical Stack</h4>
+                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds and boosting system response.</p>
+                <h4>Technical Architecture</h4>
                 <ul>
-                    <li><strong>Backend:</strong> Python-based engine handling process links.</li>
-                    <li><strong>Communication:</strong> Implements RPC logic supporting one-click operations, reducing SSH dependency.</li>
+                    <li><strong>Backend Engine:</strong> Python-based, handling process connections with server core.</li>
+                    <li><strong>Communication:</strong> Implements RPC logic supporting one-click start/stop/restart, significantly reducing SSH dependency.</li>
+                </ul>
+                <h4>Key Features & Development Focus</h4>
+                <ul>
+                    <li><strong>Real-time Monitoring:</strong> Captures server activity metrics via polling to ensure high availability.</li>
+                    <li><strong>Log Integration:</strong> Automatically routes server logs to the web interface with keyword tracking for faster troubleshooting.</li>
+                    <li><strong>Security:</strong> Optimized workflows for internal needs to prevent service interruptions caused by accidental triggers.</li>
                 </ul>`
         }
     };
 
     function changeLanguage(lang) {
         localStorage.setItem('user-lang', lang);
-        
-        // 標題與描述
         document.getElementById("about-title").innerHTML = i18n[lang].aboutTitle;
         document.getElementById("about-desc").innerHTML = i18n[lang].aboutDesc;
         document.getElementById("cert-title").innerHTML = i18n[lang].certTitle;
         document.getElementById("cert-list").innerHTML = i18n[lang].certList;
         document.getElementById("projects-title").innerHTML = i18n[lang].projectTitle;
-        
-        // 專案描述 (確保包含 KSR 監測平台)
         document.getElementById("ksr-lumi-p").innerHTML = i18n[lang].ksrLumiDesc;
         document.getElementById("ksr-stream-p").innerHTML = i18n[lang].ksrStreamDesc;
         document.getElementById("ksr-control-p").innerHTML = i18n[lang].ksrControlDesc;
         
-        // 詳情彈窗
+        // 彈窗內的內容更換
         document.getElementById("modalTitle").innerHTML = i18n[lang].modalDetailTitle;
         document.getElementById("modalBody").innerHTML = i18n[lang].modalDetailContent;
 
-        // 按鈕文字更新
+        // 批次更換按鈕文字
         document.querySelectorAll(".btn").forEach(btn => {
             if (btn.innerText.includes("觀看") || btn.innerText.includes("Watch")) btn.innerText = i18n[lang].viewDemo;
             else if (btn.innerText.includes("預覽") || btn.innerText.includes("Live")) btn.innerText = i18n[lang].viewLive;
@@ -82,7 +90,7 @@
         });
     }
 
-    // --- 2. 核心控制 ---
+    // --- 2. 核心控制 (輪播、詳情、主題) ---
     function moveSlide(step, btnElement) {
         const container = btnElement.parentElement;
         const slider = container.querySelector('.slider');
@@ -156,7 +164,6 @@
             <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 1px;">HIST / LATEST</span>
             </div>
-
             <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">LANG /</span>
                 <select id="lang-selector" onchange="changeLanguage(this.value)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
@@ -164,7 +171,6 @@
                     <option value="en">EN</option>
                 </select>
             </div>
-
             <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">MODE /</span>
                 <select id="theme-selector" onchange="changeTheme(this)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
@@ -182,15 +188,12 @@
         <h2 id="about-title">關於我</h2>
         <div class="about-container">
             <div class="about-text">
-                <p id="about-desc">目前就讀 <strong>亞東科技大學 - 通訊工程系</strong>。專注於 <strong>Python 自動化開發</strong> 與 <strong>Streamlit 數據應用</strong>。</p>
+                <p id="about-desc">載入中...</p>
             </div>
             <div class="skills-highlights">
                 <h3 id="cert-title">專業認證</h3>
                 <ul class="badge-list" id="cert-list">
-                    <li><span class="badge">通訊技術乙級</span></li>
-                    <li><span class="badge">電腦硬體裝修乙級</span></li>
-                    <li><span class="badge">GS1 物聯網專業人員認證</span></li>
-                </ul>
+                    </ul>
             </div>
         </div>
     </section>
@@ -210,7 +213,7 @@
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
             </div>
-            <p id="ksr-lumi-p">使用Python-pygame製造的一款簡易節奏遊戲。</p>
+            <p id="ksr-lumi-p">載入中...</p>
             <a href="javascript:void(0)" class="btn" onclick="openVideoModal('HyIEvI6--yQ')">觀看遊玩畫面</a>
         </div>
 
@@ -225,7 +228,7 @@
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
             </div>
-            <p id="ksr-stream-p">使用 Python 與 Streamlit 打造的即時監測工具。</p>
+            <p id="ksr-stream-p">載入中...</p>
             <a href="https://my-ai-app-vweyvgkccwtkc4hgswuv9c.streamlit.app/" target="_blank" class="btn">進入即時預覽</a>
         </div>
 
@@ -241,7 +244,7 @@
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
             </div>
-            <p id="ksr-control-p">整合式服務監控與自動化控制中心。</p>
+            <p id="ksr-control-p">載入中...</p>
             <a href="javascript:void(0)" class="btn" onclick="openModal()">查看專案細節</a>
         </div>
     </section>

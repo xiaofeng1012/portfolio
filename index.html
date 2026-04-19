@@ -7,7 +7,7 @@
     <link id="theme-style" rel="stylesheet" href="style-1.css">
 </head>
 <script>
-    // --- 語言字典 (i18n) ---
+    // --- 1. 語言字典 (i18n) ---
     const i18n = {
         zh: {
             aboutTitle: "關於我",
@@ -42,7 +42,7 @@
         },
         en: {
             aboutTitle: "About Me",
-            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in integrating protocols with software development to solve maintenance and quality tracking issues.",
+            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in merging communication protocols with software development to solve maintenance and quality tracking issues.",
             certTitle: "Certifications",
             certList: '<li><span class="badge">Level B Communications Tech.</span></li><li><span class="badge">Level B Computer Hardware Maint.</span></li><li><span class="badge">GS1 IoT Professional Cert.</span></li>',
             projectTitle: "Portfolio",
@@ -52,17 +52,23 @@
             ksrLumiName: "KSR LumiBeat",
             ksrLumiDesc: "A simple rhythm game built with Python-pygame.",
             ksrStreamName: "KSR Network Quality Monitor",
-            ksrStreamDesc: "A real-time network quality monitoring tool built with Python and Streamlit.",
+            ksrStreamDesc: "Real-time network quality monitoring tool built with Python and Streamlit.",
             ksrControlName: "KSR Server Control",
             ksrControlDesc: "Integrated service monitoring and automation center for server maintenance.",
             modalDetailTitle: "Project Details",
             modalDetailContent: `
                 <h3>KSR Server Control</h3>
-                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds and improving system response.</p>
-                <h4>Technical Stack</h4>
+                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds and boosting system response.</p>
+                <h4>Technical Architecture</h4>
                 <ul>
-                    <li><strong>Backend Engine:</strong> Python-based engine handling process links.</li>
-                    <li><strong>Communication Layer:</strong> Implements RPC logic supporting one-click operations.</li>
+                    <li><strong>Backend Engine:</strong> Python-based, handling process connections with server core.</li>
+                    <li><strong>Communication:</strong> Implements RPC logic supporting one-click start/stop/restart, significantly reducing SSH dependency.</li>
+                </ul>
+                <h4>Key Features</h4>
+                <ul>
+                    <li><strong>Real-time Monitoring:</strong> Captures server activity metrics via polling to ensure high availability.</li>
+                    <li><strong>Log Integration:</strong> Automatically routes server logs to the web interface with keyword tracking.</li>
+                    <li><strong>Security:</strong> Optimized workflows for internal needs to prevent service interruptions.</li>
                 </ul>`
         }
     };
@@ -74,12 +80,15 @@
         document.getElementById("cert-title").innerHTML = i18n[lang].certTitle;
         document.getElementById("cert-list").innerHTML = i18n[lang].certList;
         document.getElementById("projects-title").innerHTML = i18n[lang].projectTitle;
+        
+        // 專案名稱與描述切換
         document.getElementById("ksr-lumi-h3").innerText = i18n[lang].ksrLumiName;
-        document.getElementById("ksr-lumi-p").innerHTML = i18n[lang].ksrLumiDesc;
+        document.getElementById("ksr-lumi-p").innerText = i18n[lang].ksrLumiDesc;
         document.getElementById("ksr-stream-h3").innerText = i18n[lang].ksrStreamName;
-        document.getElementById("ksr-stream-p").innerHTML = i18n[lang].ksrStreamDesc;
+        document.getElementById("ksr-stream-p").innerText = i18n[lang].ksrStreamDesc;
         document.getElementById("ksr-control-h3").innerText = i18n[lang].ksrControlName;
-        document.getElementById("ksr-control-p").innerHTML = i18n[lang].ksrControlDesc;
+        document.getElementById("ksr-control-p").innerText = i18n[lang].ksrControlDesc;
+        
         document.getElementById("modalTitle").innerHTML = i18n[lang].modalDetailTitle;
         document.getElementById("modalBody").innerHTML = i18n[lang].modalDetailContent;
 
@@ -90,6 +99,7 @@
         });
     }
 
+    // --- 2. 核心控制 ---
     function moveSlide(step, btnElement) {
         const container = btnElement.parentElement;
         const slider = container.querySelector('.slider');
@@ -147,9 +157,11 @@
     }
 
     window.onload = function() {
-        const savedTheme = localStorage.getItem('user-theme') || 'style-1.css';
-        document.getElementById('theme-style').href = savedTheme;
-        document.getElementById('theme-selector').value = savedTheme;
+        const savedTheme = localStorage.getItem('user-theme');
+        if (savedTheme) {
+            document.getElementById('theme-style').href = savedTheme;
+            document.getElementById('theme-selector').value = savedTheme;
+        }
         const savedLang = localStorage.getItem('user-lang') || 'en';
         document.getElementById('lang-selector').value = savedLang;
         changeLanguage(savedLang);
@@ -161,8 +173,8 @@
             <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">LANG /</span>
                 <select id="lang-selector" onchange="changeLanguage(this.value)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
-                    <option value="en">EN</option>
                     <option value="zh">中文</option>
+                    <option value="en">EN</option>
                 </select>
             </div>
             <div style="display: flex; align-items: center;">
@@ -170,7 +182,6 @@
                 <select id="theme-selector" onchange="changeTheme(this)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
                     <option value="style-1.css">DARK</option>
                     <option value="style-2.css">LIGHT</option>
-                    <option value="style-3.css">TECH (Premium)</option>
                 </select>
             </div>
         </div>
@@ -196,6 +207,7 @@
         <h2 id="projects-title">目前作品</h2>
 
         <div class="project-card">
+            <h3 id="ksr-lumi-h3">KSR LumiBeat</h3>
             <div class="slider-container">
                 <div class="slider">
                     <img src="KSR Lumibeat_1.png" alt="S1" class="slide" onclick="openImageModal(this.src, event)">
@@ -206,14 +218,12 @@
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
             </div>
-            <div class="project-info">
-                <h3 id="ksr-lumi-h3">KSR LumiBeat</h3>
-                <p id="ksr-lumi-p">載入中...</p>
-                <a href="javascript:void(0)" class="btn" onclick="openVideoModal('HyIEvI6--yQ')">觀看遊玩畫面</a>
-            </div>
+            <p id="ksr-lumi-p">載入中...</p>
+            <a href="javascript:void(0)" class="btn" onclick="openVideoModal('HyIEvI6--yQ')">觀看遊玩畫面</a>
         </div>
 
         <div class="project-card">
+            <h3 id="ksr-stream-h3">KSR 通訊品質監測平台</h3>
             <div class="slider-container">
                 <div class="slider">
                     <img src="KSR Streamlit.png" alt="P1" class="slide" onclick="openImageModal(this.src, event)">
@@ -223,14 +233,12 @@
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
             </div>
-            <div class="project-info">
-                <h3 id="ksr-stream-h3">KSR 通訊品質監測平台</h3>
-                <p id="ksr-stream-p">載入中...</p>
-                <a href="https://my-ai-app-vweyvgkccwtkc4hgswuv9c.streamlit.app/" target="_blank" class="btn">進入即時預覽</a>
-            </div>
+            <p id="ksr-stream-p">載入中...</p>
+            <a href="https://my-ai-app-vweyvgkccwtkc4hgswuv9c.streamlit.app/" target="_blank" class="btn">進入即時預覽</a>
         </div>
 
         <div class="project-card">
+            <h3 id="ksr-control-h3">KSR Server Control</h3>
             <div class="slider-container">
                 <div class="slider">
                     <img src="KSR Control_1.png" alt="C1" class="slide" onclick="openImageModal(this.src, event)">
@@ -241,11 +249,8 @@
                 <button class="prev" onclick="moveSlide(-1, this)">&#10094;</button>
                 <button class="next" onclick="moveSlide(1, this)">&#10095;</button>
             </div>
-            <div class="project-info">
-                <h3 id="ksr-control-h3">KSR Server Control</h3>
-                <p id="ksr-control-p">載入中...</p>
-                <a href="javascript:void(0)" class="btn" onclick="openModal()">查看專案細節</a>
-            </div>
+            <p id="ksr-control-p">載入中...</p>
+            <a href="javascript:void(0)" class="btn" onclick="openModal()">查看專案細節</a>
         </div>
     </section>
 

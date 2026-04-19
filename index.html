@@ -7,7 +7,7 @@
     <link id="theme-style" rel="stylesheet" href="style-1.css">
 </head>
 <script>
-    // --- 1. 語言字典 (i18n) - 補全所有區塊內容 ---
+    // --- 1. 語言字典 (i18n) ---
     const i18n = {
         zh: {
             aboutTitle: "關於我",
@@ -29,17 +29,11 @@
                 <ul>
                     <li><strong>後端引擎：</strong> 基於 Python 開發，負責處理與伺服器核心的處理序連結。</li>
                     <li><strong>通訊層控制：</strong> 實現遠端程序調用邏輯，支援一鍵式啟動、停止與重啟，大幅減少 SSH 操作需求。</li>
-                </ul>
-                <h4>關鍵功能與開發重點</h4>
-                <ul>
-                    <li><strong>即時狀態監測：</strong> 透過輪詢機制即時擷取伺服器活動指標，確保服務高可用性.</li>
-                    <li><strong>異質日誌整合：</strong> 自動化導引 Server Logs 至 Web 介面，支援關鍵字即時追蹤，加速故障排除.</li>
-                    <li><strong>權限與安全流程：</strong> 針對內部管理需求優化操作流程，防止因誤觸導致的服務中斷.</li>
                 </ul>`
         },
         en: {
             aboutTitle: "About Me",
-            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in integrating protocols with software development. Developed KSR monitoring platforms and server control centers to solve maintenance and quality tracking issues.",
+            aboutDesc: "Currently a senior at <strong>Far East University, Dept. of Communication Engineering</strong>. Focused on <strong>Python automation</strong> and <strong>Streamlit</strong> applications.<br>Specialized in integrating protocols with software development. Developed KSR monitoring platforms and server control centers to solve maintenance issues.",
             certTitle: "Certifications",
             certList: '<li><span class="badge">Level B Communications Tech.</span></li><li><span class="badge">Level B Computer Hardware Maint.</span></li><li><span class="badge">GS1 IoT Professional Cert.</span></li>',
             projectTitle: "Portfolio",
@@ -52,17 +46,11 @@
             modalDetailTitle: "Project Details",
             modalDetailContent: `
                 <h3>KSR Server Control</h3>
-                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds and improving system response.</p>
+                <p>A backend management platform designed for a custom quotation system, lowering maintenance thresholds.</p>
                 <h4>Technical Stack</h4>
                 <ul>
-                    <li><strong>Backend:</strong> Python-based engine handling process links with the server core.</li>
-                    <li><strong>Communication:</strong> Implements RPC logic supporting one-click start, stop, and restart, reducing SSH dependency.</li>
-                </ul>
-                <h4>Key Features</h4>
-                <ul>
-                    <li><strong>Real-time Monitoring:</strong> Polls server activity metrics to ensure high service availability.</li>
-                    <li><strong>Log Integration:</strong> Automatically pipes server logs to the web interface with keyword tracking.</li>
-                    <li><strong>Security:</strong> Optimized workflows for internal management to prevent accidental service interruptions.</li>
+                    <li><strong>Backend:</strong> Python-based engine handling process links.</li>
+                    <li><strong>Communication:</strong> Implements RPC logic supporting one-click operations, reducing SSH dependency.</li>
                 </ul>`
         }
     };
@@ -70,21 +58,23 @@
     function changeLanguage(lang) {
         localStorage.setItem('user-lang', lang);
         
-        // 使用 innerHTML 確保 <strong> <br> 等標籤生效
+        // 標題與描述
         document.getElementById("about-title").innerHTML = i18n[lang].aboutTitle;
         document.getElementById("about-desc").innerHTML = i18n[lang].aboutDesc;
         document.getElementById("cert-title").innerHTML = i18n[lang].certTitle;
         document.getElementById("cert-list").innerHTML = i18n[lang].certList;
         document.getElementById("projects-title").innerHTML = i18n[lang].projectTitle;
+        
+        // 專案描述 (確保包含 KSR 監測平台)
         document.getElementById("ksr-lumi-p").innerHTML = i18n[lang].ksrLumiDesc;
         document.getElementById("ksr-stream-p").innerHTML = i18n[lang].ksrStreamDesc;
         document.getElementById("ksr-control-p").innerHTML = i18n[lang].ksrControlDesc;
         
-        // 彈窗內的內容也一併更換
+        // 詳情彈窗
         document.getElementById("modalTitle").innerHTML = i18n[lang].modalDetailTitle;
         document.getElementById("modalBody").innerHTML = i18n[lang].modalDetailContent;
 
-        // 批次更換按鈕文字
+        // 按鈕文字更新
         document.querySelectorAll(".btn").forEach(btn => {
             if (btn.innerText.includes("觀看") || btn.innerText.includes("Watch")) btn.innerText = i18n[lang].viewDemo;
             else if (btn.innerText.includes("預覽") || btn.innerText.includes("Live")) btn.innerText = i18n[lang].viewLive;
@@ -92,7 +82,7 @@
         });
     }
 
-    // --- 2. 核心控制 (輪播、詳情、主題) ---
+    // --- 2. 核心控制 ---
     function moveSlide(step, btnElement) {
         const container = btnElement.parentElement;
         const slider = container.querySelector('.slider');
@@ -164,12 +154,9 @@
     <header style="position: relative; padding-top: 60px;">
         <div class="controls-container" style="position: absolute; top: 15px; right: 20px; display: flex; gap: 15px; align-items: center; z-index: 100;">
             <div style="display: flex; align-items: center;">
-                <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">HIST /</span>
-                <select onchange="location.href=this.value" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
-                    <option value="/">LATEST</option>
-                    <option value="/v0.1/">V0.1</option>
-                </select>
+                <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 1px;">HIST / LATEST</span>
             </div>
+
             <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">LANG /</span>
                 <select id="lang-selector" onchange="changeLanguage(this.value)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
@@ -177,6 +164,7 @@
                     <option value="en">EN</option>
                 </select>
             </div>
+
             <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">MODE /</span>
                 <select id="theme-selector" onchange="changeTheme(this)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
@@ -266,8 +254,7 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle">專案詳情</h2>
-            <div id="modalBody">
-                </div>
+            <div id="modalBody"></div>
         </div>
     </div>
 

@@ -7,7 +7,7 @@
     <link id="theme-style" rel="stylesheet" href="style-1.css">
 </head>
 <script>
-    // --- 1. 語言字典 (i18n) - 包含你提供的最新專案詳情 ---
+    // --- 1. 語言字典 (i18n) ---
     const i18n = {
         zh: {
             aboutTitle: "關於我",
@@ -18,8 +18,11 @@
             viewDemo: "觀看遊玩畫面",
             viewLive: "進入即時預覽",
             viewDetail: "查看專案細節",
+            ksrLumiName: "KSR LumiBeat",
             ksrLumiDesc: "使用Python-pygame製造的一款簡易節奏遊戲。",
+            ksrStreamName: "KSR 通訊品質監測平台",
             ksrStreamDesc: "使用 Python 與 Streamlit 打造的即時監測工具，提供網路連線品質數據可視化。",
+            ksrControlName: "KSR Server Control",
             ksrControlDesc: "整合式服務監控與自動化控制中心，專為優化系統維運與日誌追蹤設計。",
             modalDetailTitle: "專案詳情",
             modalDetailContent: `
@@ -46,8 +49,11 @@
             viewDemo: "Watch Gameplay",
             viewLive: "Live Preview",
             viewDetail: "Project Details",
+            ksrLumiName: "KSR LumiBeat",
             ksrLumiDesc: "A simple rhythm game built with Python-pygame.",
+            ksrStreamName: "KSR Network Quality Monitor",
             ksrStreamDesc: "Real-time network quality monitoring tool built with Python and Streamlit.",
+            ksrControlName: "KSR Server Control",
             ksrControlDesc: "Integrated service monitoring and automation center for server maintenance.",
             modalDetailTitle: "Project Details",
             modalDetailContent: `
@@ -58,11 +64,11 @@
                     <li><strong>Backend Engine:</strong> Python-based, handling process connections with server core.</li>
                     <li><strong>Communication:</strong> Implements RPC logic supporting one-click start/stop/restart, significantly reducing SSH dependency.</li>
                 </ul>
-                <h4>Key Features & Development Focus</h4>
+                <h4>Key Features</h4>
                 <ul>
                     <li><strong>Real-time Monitoring:</strong> Captures server activity metrics via polling to ensure high availability.</li>
-                    <li><strong>Log Integration:</strong> Automatically routes server logs to the web interface with keyword tracking for faster troubleshooting.</li>
-                    <li><strong>Security:</strong> Optimized workflows for internal needs to prevent service interruptions caused by accidental triggers.</li>
+                    <li><strong>Log Integration:</strong> Automatically routes server logs to the web interface with keyword tracking.</li>
+                    <li><strong>Security:</strong> Optimized workflows for internal needs to prevent service interruptions.</li>
                 </ul>`
         }
     };
@@ -74,15 +80,18 @@
         document.getElementById("cert-title").innerHTML = i18n[lang].certTitle;
         document.getElementById("cert-list").innerHTML = i18n[lang].certList;
         document.getElementById("projects-title").innerHTML = i18n[lang].projectTitle;
-        document.getElementById("ksr-lumi-p").innerHTML = i18n[lang].ksrLumiDesc;
-        document.getElementById("ksr-stream-p").innerHTML = i18n[lang].ksrStreamDesc;
-        document.getElementById("ksr-control-p").innerHTML = i18n[lang].ksrControlDesc;
         
-        // 彈窗內的內容更換
+        // 專案名稱與描述切換
+        document.getElementById("ksr-lumi-h3").innerText = i18n[lang].ksrLumiName;
+        document.getElementById("ksr-lumi-p").innerText = i18n[lang].ksrLumiDesc;
+        document.getElementById("ksr-stream-h3").innerText = i18n[lang].ksrStreamName;
+        document.getElementById("ksr-stream-p").innerText = i18n[lang].ksrStreamDesc;
+        document.getElementById("ksr-control-h3").innerText = i18n[lang].ksrControlName;
+        document.getElementById("ksr-control-p").innerText = i18n[lang].ksrControlDesc;
+        
         document.getElementById("modalTitle").innerHTML = i18n[lang].modalDetailTitle;
         document.getElementById("modalBody").innerHTML = i18n[lang].modalDetailContent;
 
-        // 批次更換按鈕文字
         document.querySelectorAll(".btn").forEach(btn => {
             if (btn.innerText.includes("觀看") || btn.innerText.includes("Watch")) btn.innerText = i18n[lang].viewDemo;
             else if (btn.innerText.includes("預覽") || btn.innerText.includes("Live")) btn.innerText = i18n[lang].viewLive;
@@ -90,7 +99,7 @@
         });
     }
 
-    // --- 2. 核心控制 (輪播、詳情、主題) ---
+    // --- 2. 核心控制 ---
     function moveSlide(step, btnElement) {
         const container = btnElement.parentElement;
         const slider = container.querySelector('.slider');
@@ -162,9 +171,6 @@
     <header style="position: relative; padding-top: 60px;">
         <div class="controls-container" style="position: absolute; top: 15px; right: 20px; display: flex; gap: 15px; align-items: center; z-index: 100;">
             <div style="display: flex; align-items: center;">
-                <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 1px;">HIST / LATEST</span>
-            </div>
-            <div style="display: flex; align-items: center;">
                 <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">LANG /</span>
                 <select id="lang-selector" onchange="changeLanguage(this.value)" style="background: transparent; color: rgba(255,255,255,0.5); border: none; font-size: 0.7rem; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding: 0 5px;">
                     <option value="zh">中文</option>
@@ -192,8 +198,7 @@
             </div>
             <div class="skills-highlights">
                 <h3 id="cert-title">專業認證</h3>
-                <ul class="badge-list" id="cert-list">
-                    </ul>
+                <ul class="badge-list" id="cert-list"></ul>
             </div>
         </div>
     </section>
@@ -202,7 +207,7 @@
         <h2 id="projects-title">目前作品</h2>
 
         <div class="project-card">
-            <h3>KSR LumiBeat</h3>
+            <h3 id="ksr-lumi-h3">KSR LumiBeat</h3>
             <div class="slider-container">
                 <div class="slider">
                     <img src="KSR Lumibeat_1.png" alt="S1" class="slide" onclick="openImageModal(this.src, event)">
@@ -218,7 +223,7 @@
         </div>
 
         <div class="project-card">
-            <h3>KSR 通訊品質監測平台</h3>
+            <h3 id="ksr-stream-h3">KSR 通訊品質監測平台</h3>
             <div class="slider-container">
                 <div class="slider">
                     <img src="KSR Streamlit.png" alt="P1" class="slide" onclick="openImageModal(this.src, event)">
@@ -233,7 +238,7 @@
         </div>
 
         <div class="project-card">
-            <h3>KSR Server Control</h3>
+            <h3 id="ksr-control-h3">KSR Server Control</h3>
             <div class="slider-container">
                 <div class="slider">
                     <img src="KSR Control_1.png" alt="C1" class="slide" onclick="openImageModal(this.src, event)">

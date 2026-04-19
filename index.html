@@ -162,7 +162,7 @@
             document.getElementById('theme-style').href = savedTheme;
             document.getElementById('theme-selector').value = savedTheme;
         }
-        const savedLang = localStorage.getItem('user-lang') || 'zh';
+        const savedLang = localStorage.getItem('user-lang') || 'en';
         document.getElementById('lang-selector').value = savedLang;
         changeLanguage(savedLang);
     }

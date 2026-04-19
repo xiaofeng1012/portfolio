@@ -1,98 +1,129 @@
-/* style-3.css - 科技大廠簡約風格 */
+/* style-game.css - 遊戲公司/賽博龐克風格 */
 :root {
-    --primary-color: #60a5fa; /* 柔和藍 */
-    --bg-color: #000000;      /* 極致黑 */
-    --card-bg: rgba(255, 255, 255, 0.03);
+    --primary-color: #00f2ff; /* 霓虹青 */
+    --secondary-color: #bc13fe; /* 霓虹紫 */
+    --bg-color: #050509;      /* 深空黑 */
+    --card-bg: #0d1117;       /* 深藍黑卡片 */
     --text-color: #ffffff;
-    --accent-color: #94a3b8;
+    --accent-color: #ff0055;  /* 警告紅 */
 }
 
 body {
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Oswald', 'Rajdhani', sans-serif; /* 建議在 HTML 加入這兩個 Google Fonts */
     background-color: var(--bg-color);
     color: var(--text-color);
+    line-height: 1.6;
     margin: 0;
+    /* 加入淡淡的網格背景 */
+    background-image: 
+        linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
-/* 重新定義 Header 為英雄區 */
+/* 頁首：霓虹標題與斜向切割 */
 header {
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at center, #1e293b 0%, #000 70%);
-    border-bottom: none;
+    background: linear-gradient(135deg, #0d1117 0%, #050509 100%);
+    padding: 100px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    /* 賽博龐克斜切效果 */
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    box-shadow: 0 0 50px rgba(0, 242, 255, 0.3);
 }
 
 header h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 700;
-    background: linear-gradient(to bottom, #fff 30%, #94a3b8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    color: #fff;
+    /* 霓虹發光字 */
+    text-shadow: 
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color),
+        0 0 40px var(--primary-color);
+    letter-spacing: 5px;
+    transform: skew(-5deg); /* 字體傾斜 */
 }
 
-/* 重新定義 Project Card 為交錯佈局 */
-#projects {
-    max-width: 1200px;
-    margin: 100px auto;
+/* 區塊標題 */
+h2 {
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    border-left: none;
+    padding-left: 0;
+    text-shadow: 0 0 15px var(--secondary-color);
+    position: relative;
+    display: inline-block;
+    transform: skew(-10deg);
 }
 
+/* 作品集卡片：增強霓虹邊框 */
 .project-card {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-    background: none;
-    box-shadow: none;
-    margin-bottom: 150px;
-    border: none;
-}
-
-/* 讓偶數項反過來，達成交錯效果 */
-.project-card:nth-child(even) {
-    flex-direction: row-reverse;
+    background-color: var(--card-bg);
+    border-radius: 4px; /* 遊戲風格通常比較方正俐落 */
+    padding: 30px;
+    margin-bottom: 40px;
+    border: 2px solid #1a202c;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .project-card:hover {
-    transform: none; /* 移除原本的漂浮感 */
-}
-
-/* 輪播區域在科技版變大 */
-.slider-container {
-    flex: 1.5;
-    border: none;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
-}
-
-/* 文字敘述區 */
-.project-card > div:not(.slider-container) {
-    flex: 1;
+    transform: translateY(-5px) scale(1.01);
+    border-color: var(--primary-color);
+    /* 滑過時產生強烈發光 */
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.5), inset 0 0 15px rgba(0, 242, 255, 0.2);
 }
 
 .project-card h3 {
-    font-size: 2rem;
-    color: #fff;
-    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
+/* 輪播圖區域 */
+.slider-container {
+    border: 2px solid #1a202c;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+.slider-container:hover {
+    border-color: var(--primary-color);
+}
+
+/* 按鈕：霓虹爆炸效果 */
 .btn {
-    background-color: #fff;
-    color: #000;
-    border-radius: 6px; /* 方中帶圓，更俐落 */
-    padding: 12px 30px;
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 0; /* 方形按鈕 */
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn:hover {
     background-color: var(--primary-color);
-    box-shadow: 0 0 30px rgba(96, 165, 250, 0.5);
+    color: #000;
+    box-shadow: 0 0 30px var(--primary-color);
+    transform: translateY(-2px);
 }
 
-/* 響應式：手機版變回垂直 */
-@media (max-width: 900px) {
-    .project-card, .project-card:nth-child(even) {
-        flex-direction: column;
-        text-align: center;
-    }
+/* Modal 燈箱也變霓虹 */
+.modal-content {
+    background-color: #0d1117;
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 0 50px rgba(188, 19, 254, 0.4);
+}
+
+.modal-content h2 {
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px var(--secondary-color);
 }

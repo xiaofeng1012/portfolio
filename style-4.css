@@ -1,122 +1,171 @@
-/* --- 基礎設定與變數 --- */
+/* --- 基礎變數與全局設定 --- */
 :root {
-  --bg-color: #0d1117; /* 深色背景，類 GitHub */
-  --card-bg: #161b22;
-  --accent-color: #2ea043; /* 專業感的綠色 */
-  --text-primary: #e6edf3;
-  --text-secondary: #8b949e;
-  --border-color: #30363d;
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --bg-main: #0d1117;
+    --bg-card: #161b22;
+    --accent: #2ea043;
+    --text-high: #e6edf3;
+    --text-mid: #8b949e;
+    --border: #30363d;
+    --shadow: 0 8px 24px rgba(0,0,0,0.5);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  font-family: var(--font-main);
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
+    background-color: var(--bg-main);
+    color: var(--text-high);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    margin: 0;
+    overflow-x: hidden; /* 防止水平滾動條 */
 }
 
-/* --- 頂級導航列 (體現細節) --- */
-header {
-  border-bottom: 1px solid var(--border-color);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  background: rgba(13, 17, 23, 0.8);
-  backdrop-filter: blur(10px);
-  z-index: 100;
+/* --- 圖片自適應核心 (解決跑出去的問題) --- */
+img {
+    max-width: 100%; /* 絕對不會超出父容器 */
+    height: auto;    /* 保持比例 */
+    display: block;
 }
 
-/* --- 專案卡片 (核心部分：主管最看重) --- */
+/* --- 專案卡片佈局優化 --- */
 .project-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 2rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  position: relative;
-  overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(20px, 5vw, 40px); /* 根據螢幕大小自動調整內距 */
+    margin: 0 auto 40px auto;
+    max-width: 900px; /* 限制最大寬度，避免在大螢幕上太寬 */
+    transition: var(--transition);
 }
 
-/* 專業感：滑過時顯示邊框亮點，而非誇張的縮放 */
-.project-card:hover {
-  border-color: var(--accent-color);
-  transform: translateY(-4px);
+.project-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
-.project-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+.project-card h3::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent);
 }
 
-/* --- 技術標籤 (體現專業度) --- */
-.tech-stack {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
+/* --- Slider 容器：確保圖片在裡面且比例完美 --- */
+.slider-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* 強制統一所有圖片顯示比例 */
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #000;
 }
 
-.tag {
-  background: rgba(46, 160, 67, 0.1);
-  color: var(--accent-color);
-  border: 1px solid rgba(46, 160, 67, 0.2);
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
+.slider {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
 }
 
-/* --- 呼應你的需求：綠色圓圈狀態指示器 --- */
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+.slide {
+    min-width: 100%;
+    object-fit: contain; /* 確保圖片完整顯示，不被裁切 */
+    cursor: zoom-in;     /* 提示使用者可以點擊放大 */
+    background: #000;
 }
 
-.status-circle {
-  width: 10px;
-  height: 10px;
-  background-color: var(--accent-color); /* 綠色填充 */
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 8px var(--accent-color);
+/* --- 幻燈片控制按鈕 (專業化) --- */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 15px 10px;
+    cursor: pointer;
+    z-index: 10;
+    transition: var(--transition);
+    backdrop-filter: blur(4px);
 }
 
-/* --- 行動召喚按鈕 (GitHub 連結) --- */
-.btn-primary {
-  background-color: #21262d;
-  color: #c9d1d9;
-  border: 1px solid var(--border-color);
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.prev:hover, .next:hover {
+    background: var(--accent);
 }
 
-.btn-primary:hover {
-  background-color: #30363d;
-  border-color: #8b949e;
+.prev { left: 0; border-radius: 0 4px 4px 0; }
+.next { right: 0; border-radius: 4px 0 0 4px; }
+
+/* --- 專業暗箱 (Modal) 效果 --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9); /* 更深的背景 */
+    backdrop-filter: blur(8px);    /* 背景模糊感，大廠愛用 */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
 }
 
-/* --- 區塊標題 --- */
-.section-label {
-  color: var(--accent-color);
-  font-family: monospace;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  display: block;
+/* 詳情 Modal */
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 700px;
+    padding: 40px;
+    border-radius: 16px;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+/* 圖片燈箱模式專用 */
+.lightbox-img {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 4px;
+    box-shadow: 0 0 50px rgba(0,0,0,1);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 30px;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close-btn:hover {
+    color: var(--text-high);
+}
+
+/* --- 行動端優化 (手機瀏覽) --- */
+@media (max-width: 768px) {
+    .about-container {
+        grid-template-columns: 1fr; /* 手機上直向排列 */
+    }
+    header {
+        padding: 60px 5% 30px;
+    }
+    section {
+        padding: 40px 5%;
+    }
 }

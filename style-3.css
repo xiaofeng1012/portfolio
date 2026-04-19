@@ -1,0 +1,98 @@
+/* style-3.css - 科技大廠簡約風格 */
+:root {
+    --primary-color: #60a5fa; /* 柔和藍 */
+    --bg-color: #000000;      /* 極致黑 */
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --text-color: #ffffff;
+    --accent-color: #94a3b8;
+}
+
+body {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* 重新定義 Header 為英雄區 */
+header {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #000 70%);
+    border-bottom: none;
+}
+
+header h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    background: linear-gradient(to bottom, #fff 30%, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 重新定義 Project Card 為交錯佈局 */
+#projects {
+    max-width: 1200px;
+    margin: 100px auto;
+}
+
+.project-card {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    background: none;
+    box-shadow: none;
+    margin-bottom: 150px;
+    border: none;
+}
+
+/* 讓偶數項反過來，達成交錯效果 */
+.project-card:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.project-card:hover {
+    transform: none; /* 移除原本的漂浮感 */
+}
+
+/* 輪播區域在科技版變大 */
+.slider-container {
+    flex: 1.5;
+    border: none;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+/* 文字敘述區 */
+.project-card > div:not(.slider-container) {
+    flex: 1;
+}
+
+.project-card h3 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    background-color: #fff;
+    color: #000;
+    border-radius: 6px; /* 方中帶圓，更俐落 */
+    padding: 12px 30px;
+}
+
+.btn:hover {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(96, 165, 250, 0.5);
+}
+
+/* 響應式：手機版變回垂直 */
+@media (max-width: 900px) {
+    .project-card, .project-card:nth-child(even) {
+        flex-direction: column;
+        text-align: center;
+    }
+}

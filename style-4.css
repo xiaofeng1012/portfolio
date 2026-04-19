@@ -1,171 +1,82 @@
-/* --- 基礎變數與全局設定 --- */
-:root {
-    --bg-main: #0d1117;
-    --bg-card: #161b22;
-    --accent: #2ea043;
-    --text-high: #e6edf3;
-    --text-mid: #8b949e;
-    --border: #30363d;
-    --shadow: 0 8px 24px rgba(0,0,0,0.5);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body {
-    background-color: var(--bg-main);
-    color: var(--text-high);
-    font-family: 'Inter', -apple-system, system-ui, sans-serif;
-    margin: 0;
-    overflow-x: hidden; /* 防止水平滾動條 */
-}
-
-/* --- 圖片自適應核心 (解決跑出去的問題) --- */
-img {
-    max-width: 100%; /* 絕對不會超出父容器 */
-    height: auto;    /* 保持比例 */
-    display: block;
-}
-
-/* --- 專案卡片佈局優化 --- */
-.project-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: clamp(20px, 5vw, 40px); /* 根據螢幕大小自動調整內距 */
-    margin: 0 auto 40px auto;
-    max-width: 900px; /* 限制最大寬度，避免在大螢幕上太寬 */
-    transition: var(--transition);
-}
-
-.project-card h3 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-.project-card h3::before {
-    content: "";
-    width: 12px;
-    height: 12px;
-    background-color: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--accent);
-}
-
-/* --- Slider 容器：確保圖片在裡面且比例完美 --- */
+/* --- 1. 修正圖片容器：確保不變形 --- */
 .slider-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9; /* 強制統一所有圖片顯示比例 */
+    /* 這裡移除固定高度，讓內容決定高度或使用統一比例 */
+    aspect-ratio: 16 / 9; 
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border);
-    background: #000;
+    background: #000; /* 圖片未載入前的底色 */
+    margin: 20px 0;
 }
 
 .slider {
     display: flex;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
+    height: 100%; /* 撐滿父容器高度 */
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide {
     min-width: 100%;
-    object-fit: contain; /* 確保圖片完整顯示，不被裁切 */
-    cursor: zoom-in;     /* 提示使用者可以點擊放大 */
-    background: #000;
+    height: 100%;
+    /* 關鍵：object-fit: contain 會讓圖片在不變形的前提下完整顯示 */
+    /* 如果你希望圖片填滿整個框(但可能會裁切邊緣)，可以改用 cover */
+    object-fit: contain; 
+    cursor: zoom-in;
 }
 
-/* --- 幻燈片控制按鈕 (專業化) --- */
-.prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    padding: 15px 10px;
-    cursor: pointer;
-    z-index: 10;
-    transition: var(--transition);
-    backdrop-filter: blur(4px);
-}
-
-.prev:hover, .next:hover {
-    background: var(--accent);
-}
-
-.prev { left: 0; border-radius: 0 4px 4px 0; }
-.next { right: 0; border-radius: 4px 0 0 4px; }
-
-/* --- 專業暗箱 (Modal) 效果 --- */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9); /* 更深的背景 */
-    backdrop-filter: blur(8px);    /* 背景模糊感，大廠愛用 */
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 詳情 Modal */
-.modal-content {
+/* --- 2. 關於我區塊：修正手機排版 --- */
+.about-container {
+    display: flex;
+    flex-direction: column; /* 預設改為垂直，避免手機擠壓 */
+    gap: 20px;
     background: var(--bg-card);
+    padding: 24px;
+    border-radius: 12px;
     border: 1px solid var(--border);
-    width: 90%;
-    max-width: 700px;
-    padding: 40px;
-    border-radius: 16px;
-    position: relative;
-    animation: modalFadeIn 0.3s ease;
 }
 
-/* 圖片燈箱模式專用 */
-.lightbox-img {
-    max-width: 90vw;
-    max-height: 80vh;
-    border-radius: 4px;
-    box-shadow: 0 0 50px rgba(0,0,0,1);
-    animation: zoomIn 0.3s ease;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes zoomIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 30px;
-    color: var(--text-mid);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.close-btn:hover {
-    color: var(--text-high);
-}
-
-/* --- 行動端優化 (手機瀏覽) --- */
-@media (max-width: 768px) {
+/* 當螢幕夠寬時（如平板、電腦）再橫向排列 */
+@media (min-width: 768px) {
     .about-container {
-        grid-template-columns: 1fr; /* 手機上直向排列 */
+        flex-direction: row;
+        justify-content: space-between;
     }
-    header {
-        padding: 60px 5% 30px;
+    .about-text {
+        flex: 2;
     }
-    section {
-        padding: 40px 5%;
+    .skills-highlights {
+        flex: 1;
+        padding-left: 20px;
+        border-left: 1px solid var(--border);
     }
+}
+
+/* --- 3. 修正標題與導航列在手機上的擠壓 --- */
+header {
+    padding: 40px 20px;
+    text-align: left;
+}
+
+header h1 {
+    font-size: clamp(1.5rem, 8vw, 2.2rem); /* 讓標題隨螢幕縮放 */
+}
+
+/* 修正控制項位置 */
+.controls-container {
+    position: fixed !important; /* 改為固定在右上角 */
+    top: 10px;
+    right: 10px;
+    background: rgba(13, 17, 23, 0.8);
+    padding: 5px 10px;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+}
+
+/* --- 4. 專業暗箱修正 --- */
+.lightbox-img {
+    max-width: 95vw;
+    max-height: 85vh;
+    object-fit: contain; /* 確保大圖也不變形 */
 }

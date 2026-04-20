@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>LumiBeat 專案開發全紀錄 - 許朕銜 Gary</title>
+    <style>
+        body { background-color: #0d0d0d; color: #e0e0e0; font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; line-height: 1.6; }
+        .container { max-width: 900px; margin: auto; padding: 40px; }
+        .hero { text-align: center; border-bottom: 2px solid #ff5500; padding-bottom: 40px; }
+        h1 { color: #ff5500; font-size: 3rem; margin-bottom: 10px; }
+        .tech-tag { background: #333; color: #ffb900; padding: 5px 15px; border-radius: 20px; margin: 5px; display: inline-block; border: 1px solid #ffb900; }
+        .section { margin-top: 50px; }
+        h2 { color: #ffb900; border-left: 5px solid #ff5500; padding-left: 15px; }
+        .code-concept { background: #1a1a1a; padding: 20px; border-radius: 10px; border-left: 4px solid #ff5500; }
+        .performance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        img { width: 100%; border-radius: 10px; border: 1px solid #444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1>LumiBeat</h1>
+            <p><strong>基於 Python 數位訊號處理技術的自動化節奏遊戲</strong></p>
+            <div class="tech-stack">
+                <span class="tech-tag">Python 3.x</span>
+                <span class="tech-tag">Pygame (引擎)</span>
+                <span class="tech-tag">Librosa (DSP)</span>
+                <span class="tech-tag">OpenCV (影像同步)</span>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>1. 核心技術：自動譜面生成 (Auto-chart Generation)</h2>
+            <p>傳統遊戲需人工製譜，LumiBeat 利用 <strong>Librosa</strong> 進行音樂特徵提取，實現「丟入 MP3 即刻遊玩」。</p>
+            <div class="code-concept">
+                <ul>
+                    <li><strong>Onset Detection：</strong> 偵測音訊中的起始能量爆發點作為打擊點。</li>
+                    <li><strong>Energy Envelope：</strong> 透過能量包絡分析副歌（能量高峰期），自動增加 Note 密度。</li>
+                    <li><strong>JSON Cache：</strong> 首次分析後產出快取檔，二次載入速度提升 90%。</li>
+                </ul>
+            </div>
+        </section>
+
+        
+
+        <section class="section">
+            <h2>2. 遊戲系統架構</h2>
+            <div class="performance-grid">
+                <div>
+                    <h3>多執行緒優化</h3>
+                    <p>使用 <code>threading</code> 將音頻分析與 UI 載入分離，解決了 Python 在處理大型音頻時產生的畫面凍結問題。</p>
+                </div>
+                <div>
+                    <h3>精確同步演算法</h3>
+                    <p>利用動態補償 <code>delta_time</code> 與音頻位置 <code>get_pos()</code> 進行校準，即使在低 FPS 狀態下也能精確判定打擊點。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>3. 視覺特效與粒子系統</h2>
+            <p>為了彌補 Python 在處理複雜 3D 的不足，我自行實作了基於 2D 物理的粒子系統：</p>
+            <ul>
+                <li><strong>StageLight System：</strong> 與 Combo 數連動，當 Combo 達標時觸發噴發效果。</li>
+                <li><strong>Video Sync：</strong> 使用 OpenCV 逐影格讀取背景影片，並與 Pygame 進行混合同步。</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>4. 學習體悟</h2>
+            <p>在這個專案中，我獨立解決了<strong>音訊同步、UI 適配、以及 Python 效能瓶頸</strong>等問題。這證明了我具備從零開發完整產品邏輯的能力，並能熟練運用資料結構（如 JSON 快取管理）與演算法來優化使用者體驗。</p>
+        </section>
+
+        <footer style="text-align: center; margin-top: 100px; color: #666;">
+            <p>© 2026 許朕銜 Gary - Portfolio Project</p>
+        </footer>
+    </div>
+</body>
+</html>

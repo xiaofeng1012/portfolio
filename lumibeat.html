@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LumiBeat | Pure Python Rhythm Action</title>
+    <link href="https://fonts.googleapis.com/css2?family=Verdana:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #ff5500;
+            --accent-yellow: #ffa500;
+            --bg-dark: #0d0d0d;
+            --card-bg: #181818;
+            --code-green: #00ff9d;
+            --nav-bg: rgba(13, 13, 13, 0.95);
+        }
+
+        /* 基礎重置與字體 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Verdana', 'Microsoft JhengHei', sans-serif; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 霓虹動態背景 */
+        .neon-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 85, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 165, 0, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* 導覽列 */
+        nav {
+            padding: 15px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 2px solid var(--primary-orange);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* 試玩版下載按鈕與呼吸特效 */
+        .download-btn {
+            background: var(--primary-orange);
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+            border: 1px solid var(--primary-orange);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 85, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 85, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 85, 0, 0); }
+        }
+
+        .download-btn:hover {
+            background: transparent;
+            color: var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .back-link:hover { color: #fff; border-bottom: 1px solid #fff; }
+
+        /* Hero 區塊 */
+        .hero {
+            height: 65vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(13,13,13,0.6), var(--bg-dark)), url('background.png') center/cover;
+            padding: 0 20px;
+        }
+
+        .hero h1 { font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: 12px; text-transform: uppercase; margin-bottom: 5px; }
+        .hero p { color: var(--accent-yellow); font-size: 1.2rem; letter-spacing: 6px; margin-bottom: 30px; font-weight: 700; }
+
+        /* 展示區塊與卡片排版 */
+        .section-container { padding: 80px 10%; }
+        .section-header { margin-bottom: 50px; border-left: 6px solid var(--primary-orange); padding-left: 25px; }
+        .section-header h2 { font-size: 2.5rem; color: var(--primary-orange); letter-spacing: 2px; text-transform: uppercase; }
+        .section-header p { color: #888; font-size: 1.1rem; }
+
+        /* 截圖網格 */
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .ss-card {
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            background: #111;
+        }
+
+        .ss-card:hover { 
+            border-color: var(--primary-orange); 
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .ss-card img { width: 100%; height: auto; display: block; filter: brightness(0.9); transition: 0.4s; }
+        .ss-card:hover img { filter: brightness(1.1); }
+        .ss-info { padding: 15px; font-size: 0.9rem; text-align: center; color: var(--accent-yellow); letter-spacing: 2px; font-weight: bold; }
+
+        /* 技術特色網格 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 20px;
+        }
+
+        .tech-card {
+            background: var(--card-bg);
+            padding: 45px 35px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #222;
+            position: relative;
+            border-radius: 4px;
+        }
+
+        .tech-card:hover { border-color: var(--primary-orange); background: #1f1f1f; box-shadow: inset 0 0 20px rgba(255,85,0,0.1); }
+        .tech-card h3 { color: var(--accent-yellow); margin-bottom: 20px; font-size: 1.6rem; letter-spacing: 1px; }
+        .tech-card p { color: #bbb; font-size: 1rem; }
+        .tech-card::after { content: "VIEW DETAIL +"; position: absolute; bottom: 20px; right: 25px; font-size: 0.7rem; color: var(--primary-orange); opacity: 0.5; }
+
+        /* 詳情彈窗美化 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.97);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #000;
+            width: 95%;
+            max-width: 950px;
+            max-height: 85vh;
+            border: 2px solid var(--primary-orange);
+            padding: 50px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(255,85,0,0.2);
+        }
+
+        .close-btn { position: absolute; top: 25px; right: 30px; font-size: 2.5rem; color: #555; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #fff; transform: rotate(90deg); }
+
+        .code-view {
+            background: #050505; 
+            color: var(--code-green); 
+            padding: 25px; 
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace; 
+            font-size: 0.95rem; 
+            margin-top: 30px;
+            border-left: 5px solid var(--primary-orange); 
+            white-space: pre-wrap;
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        footer { padding: 60px; text-align: center; font-size: 0.85rem; color: #555; border-top: 1px solid #1a1a1a; letter-spacing: 1px; }
+
+        /* 手機版適應 */
+        @media (max-width: 768px) {
+            nav { padding: 15px 25px; }
+            .section-container { padding: 60px 5%; }
+            .hero h1 { font-size: 3rem; }
+            .modal-box { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="neon-bg"></div>
+
+    <nav>
+        <div class="logo">LUMIBEAT</div>
+        <div class="nav-links">
+            <a href="https://drive.google.com/uc?export=download&id=10C_uoaqlVFtscI69k-Gtxq2nHbIbxL0i" class="download-btn">DOWNLOAD DEMO</a>
+            <a href="index.html" class="back-link">BACK TO HOME</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>LumiBeat</h1>
+        <p>A PURE PYTHON RHYTHM PROJECT</p>
+    </header>
+
+    <section class="section-container">
+        <div class="section-header">
+            <h2>Interface Showcase</h2>
+            <p>UI 介面與遊玩展示</p>
+        </div>
+        <div class="screenshot-grid">
+            <div class="ss-card">
+                <img src="KSR Lumibeat_1.png" alt="主選單">
+                <div class="ss-info">MENU INTERFACE</div>
+            </div>
+            <div class="ss-card">
+                <img src="KSR Lumibeat_2.png" alt="選曲畫面">
+                <div class="ss-info">SONG SELECTION</div>
+            </div>
+            <div class="ss-card">
+                <img src="KSR Lumibeat_3.png" alt="實機運行">
+                <div class="ss-info">GAME ENGINE RUNNING</div>
+            </div>
+            <div class="ss-card">
+                <img src="KSR Lumibeat_4.png" alt="圖譜編輯">
+                <div class="ss-info">ATLAS EDITING</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" style="background: rgba(255, 85, 0, 0.02);">
+        <div class="section-header">
+            <h2>Core Highlights</h2>
+            <p>技術特色與開發細節</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="tech-card" onclick="openModal('python')">
+                <h3>原生 Python 開發</h3>
+                <p>挑戰 Pygame 效能極限，不依賴 Unity 或 Unreal。從音符物理公式到異步資源加載，皆由 100% 原生 Python 邏輯封裝而成。</p>
+            </div>
+            <div class="tech-card" onclick="openModal('res')">
+                <h3>動態解析度自適應</h3>
+                <p>自研 Layout Scaling 技術。透過動態比例因子計算，確保遊戲在 1366x768 至 4K 環境下，軌道與判定線始終保持黃金比例。</p>
+            </div>
+            <div class="tech-card" onclick="openModal('sync')">
+                <h3>雙押提示線邏輯</h3>
+                <p>強化高難度譜面讀譜體驗。系統自動偵測相同時間戳記的音符，並以動態中心座標繪製連接線，徹底解決視覺脫節感。</p>
+            </div>
+            <div class="tech-card" onclick="openModal('particle')">
+                <h3>20 Combo 里程碑特效</h3>
+                <p>兼顧效能與視覺的打擊反饋。每 20 連擊觸發一次雙側舞台粒子噴發，透過 Alpha 通道優化實現震撼的物理煙火特效。</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="techModal" class="modal" onclick="closeModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="mTitle" style="color: var(--primary-orange); margin-bottom: 15px; font-size: 2rem; border-bottom: 1px solid #333; padding-bottom: 10px;">技術名稱</h2>
+            <div id="mDesc" style="color: #bbb; font-size: 1.1rem; line-height: 1.8; margin-top: 20px;"></div>
+            <div id="mCode" class="code-view"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 PROJECT LUMIBEAT | SYSTEM ARCHITECT: GARY 許朕銜</p>
+        <p style="margin-top: 8px;">Developed with Pygame Library</p>
+    </footer>
+
+    <script>
+        const data = {
+            'python': {
+                title: '原生 Python 開發 (Pure Scripting)',
+                desc: '本專案完全放棄商業引擎，挑戰 Python 腳本語言在處理高頻判定與多層 Surface 渲染時的瓶頸。實現了低延遲的音軌載入與毫秒級判定迴圈。',
+                code: '# 核心資源管理片段\npygame.mixer.music.load(audio_file)\npygame.mixer.music.set_volume(config.global_volume)\npygame.mixer.music.play()'
+            },
+            'res': {
+                title: '動態解析度自適應 (Layout Scaling)',
+                desc: '核心演算法 refresh_layout 會在每一幀或初始化時，根據 config.WIDTH 重算佈局。軌道寬度、判定線高度 (HEIGHT - 120) 皆採動態計算而非寫死數值。',
+                code: '# 解析度自適應演算法\nstart_x = (config.WIDTH - (lane_w * lane_count)) // 2\nLX = [start_x + i * lane_w for i in range(lane_count)]\nHIT_LINE_Y = config.HEIGHT - 120'
+            },
+            'sync': {
+                title: '雙押提示線邏輯 (Dual-Note Logic)',
+                desc: '判定引擎掃描 Active Notes，若發現 Timestamp 重疊則進行連線處理。center_off = lane_w // 2 是確保連線精準鎖定在音符視覺中心點的關鍵公式。',
+                code: '# 雙押偵測與繪圖連線\nif len(notes) > 1:\n    center_off = lane_w // 2\n    pygame.draw.line(screen, (255,255,255), \n                     (n1.x + center_off, n1.y), \n                     (n2.x + center_off, n2.y), 2)'
+            },
+            'particle': {
+                title: '里程碑特效 (Combo Milestone)',
+                desc: '為了不耗費過多效能，我們實作了「區段式觸發」。每當連擊數達到 20 的倍數，系統會同步於畫面兩側產生具初速與重力參數的特效粒子，營造舞台感。',
+                code: 'if combo > 0 and combo % 20 == 0:\n    for _ in range(45):\n        particles.append(StageLightParticle(0, config.HEIGHT))\n        particles.append(StageLightParticle(config.WIDTH, config.HEIGHT))'
+            }
+        };
+
+        function openModal(id) {
+            const item = data[id];
+            document.getElementById('mTitle').innerText = item.title;
+            document.getElementById('mDesc').innerText = item.desc;
+            document.getElementById('mCode').innerText = item.code;
+            document.getElementById('techModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('techModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 監聽 ESC 鍵關閉彈窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+    </script>
+</body>
+</html>
